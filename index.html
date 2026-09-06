@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Infrastructure Portfolio Dashboard</title>
+<style>
+:root{--bg:#f4f7fb;--ink:#14213d;--muted:#64748b;--line:#e2e8f0;--blue:#2f80ed;--dark:#102a43;--card:#fff;--green:#166534;--greenbg:#dcfce7;--amber:#854d0e;--amberbg:#fef9c3;--red:#991b1b;--redbg:#fee2e2}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}main{max-width:1180px;margin:auto;padding:30px 20px 50px}header{background:linear-gradient(135deg,var(--dark),var(--blue));color:white;border-radius:28px;padding:38px;box-shadow:0 18px 50px #1b365d33}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;opacity:.78;font-size:12px}.hero-row{display:flex;justify-content:space-between;gap:24px;align-items:flex-end}.hero-copy{max-width:780px}h1{font-size:44px;line-height:1.02;margin:.18em 0 .35em}header p{margin:0;line-height:1.55}.status{background:#ffffff18;border:1px solid #ffffff35;border-radius:18px;padding:14px 16px;min-width:205px}.status small{display:block;opacity:.75;margin-bottom:4px}.status strong{font-size:15px}.toolbar,.kpis,.grid{display:grid;gap:16px;margin:20px 0}.toolbar{grid-template-columns:1fr auto}.notice{background:#eef6ff;border:1px solid #bfdbfe;border-radius:16px;padding:13px 16px;color:#1e3a5f;font-size:14px;line-height:1.45}.toolbar button,.panel button{border:0;border-radius:13px;padding:11px 15px;background:var(--ink);color:white;font-weight:800;cursor:pointer}.kpis{grid-template-columns:repeat(4,1fr)}.kpis div,.panel{background:var(--card);border-radius:22px;padding:22px;box-shadow:0 10px 30px #0f172a12}.kpis span{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}.kpis strong{font-size:26px}.grid{grid-template-columns:1.05fr .95fr}.panel h2{margin:0 0 15px;font-size:20px}.panel p{line-height:1.6}.bar-row{display:grid;grid-template-columns:60px 1fr 58px;gap:10px;align-items:center;margin:10px 0;font-size:13px}.track{height:12px;background:#e8eef7;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#1d4ed8,#60a5fa);border-radius:999px}.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.signal-card{border:1px solid var(--line);border-radius:16px;padding:15px}.signal-card strong{font-size:26px;display:block}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:820px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 9px}th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}td{font-size:14px}.badge{display:inline-block;border-radius:999px;padding:5px 10px;font-weight:800;font-size:12px}.Buy{background:var(--greenbg);color:var(--green)}.Hold{background:var(--amberbg);color:var(--amber)}.Watch{background:var(--redbg);color:var(--red)}.commentary{background:#f8fafc;border-left:4px solid var(--blue);padding:16px 18px;border-radius:10px;line-height:1.65}.foot{color:var(--muted);font-size:12px;margin-top:14px}.theme{color:#475569}.score{font-weight:800}.alloc{font-variant-numeric:tabular-nums}.mini{color:var(--muted);font-size:13px}.pill{display:inline-flex;align-items:center;gap:7px}.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block}
+@media(max-width:850px){.kpis,.grid,.toolbar{grid-template-columns:1fr}.hero-row{display:block}.status{margin-top:20px}h1{font-size:34px}.signal-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="hero-row">
+    <div class="hero-copy">
+      <p class="eyebrow">Investment Committee SPA · $1M mandate</p>
+      <h1>AI Infrastructure Quality‑Momentum</h1>
+      <p>A diversified equity strategy targeting the infrastructure layer of the AI build‑out across semiconductors, cloud, networking, power, memory, servers, software and cybersecurity.</p>
+    </div>
+    <div class="status"><small>Dashboard status</small><strong class="pill"><span class="dot"></span> Ready for committee review</strong></div>
+  </div>
+</header>
+
+<section class="toolbar">
+  <div class="notice"><b>Data mode:</b> the portfolio loads instantly from an embedded authenticated-data snapshot so the public demo never appears blank. The structure is ready to swap to a secured live-price endpoint later.</div>
+  <button id="refresh">Refresh dashboard</button>
+</section>
+
+<section class="kpis">
+  <div><span>Mandate Value</span><strong id="totalValue">$1,000,000</strong></div>
+  <div><span>Buy Signals</span><strong id="buyCount">—</strong></div>
+  <div><span>Largest Weight</span><strong id="largestWeight">—</strong></div>
+  <div><span>Number of Holdings</span><strong id="holdingCount">—</strong></div>
+</section>
+
+<section class="grid">
+  <div class="panel"><h2>Top optimized weights</h2><div id="bars"></div><p class="mini">Weights sum to approximately 100%; rounding causes a negligible difference.</p></div>
+  <div class="panel"><h2>Trading signal summary</h2><div class="signal-grid" id="signals"></div><p class="mini" style="margin-top:14px">Signal labels combine thesis conviction and a simplified quality/momentum score for classroom demonstration.</p></div>
+</section>
+
+<section class="panel"><h2>Portfolio composition</h2><div class="table-wrap"><table><thead><tr><th>Ticker</th><th>Company</th><th>Theme</th><th>Weight</th><th>Reference Price</th><th>$ Allocation</th><th>Score</th><th>Signal</th></tr></thead><tbody id="rows"></tbody></table></div><div class="foot">Reference prices are a static snapshot for resilient public presentation and are not represented as current market quotes.</div></section>
+
+<section class="panel"><h2>Executive commentary</h2><div class="commentary" id="commentary"></div><p class="foot">This is pre-generated executive commentary for the public demo. In a production architecture, LLM generation should run server-side so API credentials are never exposed in browser code.</p></section>
+</main>
+
+<script>
+const capital=1000000;
+const portfolio=[
+["MSFT","Microsoft","Cloud/platform",0.07867,499.70,92,"Buy"],["GOOGL","Alphabet","Cloud/search AI",0.06837,338.46,88,"Buy"],["AMZN","Amazon","Cloud/e-commerce",0.05978,258.51,86,"Buy"],["TSM","TSMC ADR","Foundry",0.05617,428.91,87,"Buy"],["AVGO","Broadcom","Semis/networking",0.05614,357.895,91,"Buy"],["ORCL","Oracle","Cloud/database",0.05573,158.78,76,"Hold"],["ETN","Eaton","Electrification",0.05566,410.85,78,"Buy"],["META","Meta","AI ads/social",0.05554,616.77,84,"Buy"],["NVDA","NVIDIA","AI chips",0.05392,230.36,95,"Buy"],["ASML","ASML ADR","Semicap equipment",0.05363,1714.88,85,"Buy"],["CRM","Salesforce","Enterprise software",0.04947,259.23,73,"Hold"],["ANET","Arista Networks","AI networking",0.04906,193.78,83,"Buy"],["NOW","ServiceNow","Workflow software",0.04527,141.26,75,"Hold"],["PANW","Palo Alto Networks","Cybersecurity",0.04397,333.26,79,"Buy"],["VRT","Vertiv","Data-center power",0.03968,280.53,82,"Buy"],["AMD","AMD","AI chips",0.03934,477.57,80,"Buy"],["CRWD","CrowdStrike","Cybersecurity",0.03915,213.10,77,"Hold"],["DELL","Dell Technologies","AI servers",0.03896,524.14,74,"Hold"],["MU","Micron","Memory",0.03234,1016.59,70,"Hold"],["SNOW","Snowflake","Data cloud",0.02916,337.18,65,"Watch"]
+].map(x=>({ticker:x[0],company:x[1],theme:x[2],weight:x[3],price:x[4],score:x[5],signal:x[6]}));
+const $=id=>document.getElementById(id);
+const money=x=>x.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+const pct=x=>(x*100).toFixed(2)+'%';
+function render(){
+  const buys=portfolio.filter(p=>p.signal==='Buy').length;
+  const maxW=Math.max(...portfolio.map(p=>p.weight));
+  $('buyCount').textContent=buys+' / '+portfolio.length;
+  $('largestWeight').textContent=pct(maxW);
+  $('holdingCount').textContent=portfolio.length;
+  $('totalValue').textContent=money(capital);
+  $('rows').innerHTML=portfolio.map(p=>`<tr><td><b>${p.ticker}</b></td><td>${p.company}</td><td class="theme">${p.theme}</td><td>${pct(p.weight)}</td><td>$${p.price.toFixed(2)}</td><td class="alloc">${money(capital*p.weight)}</td><td class="score">${p.score}</td><td><span class="badge ${p.signal}">${p.signal}</span></td></tr>`).join('');
+  const top=[...portfolio].sort((a,b)=>b.weight-a.weight).slice(0,10), mx=top[0].weight;
+  $('bars').innerHTML=top.map(p=>`<div class="bar-row"><b>${p.ticker}</b><div class="track"><div class="fill" style="width:${(p.weight/mx)*100}%"></div></div><span>${pct(p.weight)}</span></div>`).join('');
+  $('signals').innerHTML=['Buy','Hold','Watch'].map(s=>{const c=portfolio.filter(p=>p.signal===s).length;return `<div class="signal-card"><span class="badge ${s}">${s}</span><strong>${c}</strong><span class="mini">holdings</span></div>`}).join('');
+  const topNames=[...portfolio].sort((a,b)=>b.weight-a.weight).slice(0,3).map(p=>p.ticker).join(', ');
+  $('commentary').innerHTML=`The strategy allocates <b>$1.0M across ${portfolio.length} AI-infrastructure equities</b>, with the largest positions in ${topNames}. The portfolio deliberately broadens exposure beyond AI chips into cloud platforms, networking, power infrastructure, cybersecurity, memory, servers and enterprise software. <b>${buys} holdings currently carry a Buy signal</b>, while lower-conviction names are held at smaller weights. The main risks are a synchronized technology drawdown, slower hyperscaler capital expenditure, semiconductor-cycle weakness, valuation compression and concentration in AI-related growth factors. The committee should monitor signal deterioration, factor concentration and position-size limits before increasing risk.`;
+}
+$('refresh').addEventListener('click',()=>{render();const b=$('refresh');b.textContent='Dashboard refreshed ✓';setTimeout(()=>b.textContent='Refresh dashboard',1400)});
+render();
+</script>
+</body>
+</html>
